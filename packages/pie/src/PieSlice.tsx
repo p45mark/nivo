@@ -5,7 +5,7 @@ import { ComputedDatum, CompletePieSvgProps } from './types'
 
 interface PieSliceProps<RawDatum> {
     datum: ComputedDatum<RawDatum>
-    path: string
+    path: string | null
     borderWidth: CompletePieSvgProps<RawDatum>['borderWidth']
     borderColor: string
     isInteractive: CompletePieSvgProps<RawDatum>['isInteractive']
@@ -69,7 +69,7 @@ export const PieSlice = <RawDatum, >({
 
     return (
         <path
-            d={path}
+            d={path ?? undefined}
             fill={datum.fill || datum.color}
             strokeWidth={borderWidth}
             stroke={borderColor}

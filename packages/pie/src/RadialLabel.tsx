@@ -1,13 +1,12 @@
 import React from 'react'
-// @ts-ignore
 import { line } from 'd3-shape'
 // @ts-ignore
 import { textPropsByEngine, useTheme } from '@nivo/core'
 import { RadialLabelData, Point } from './types'
 
-const lineGenerator = line()
-    .x((d: Point) => d.x)
-    .y((d: Point) => d.y)
+const lineGenerator = line<Point>()
+    .x(d => d.x)
+    .y(d => d.y)
 
 // prettier-ignore
 export const RadialLabel = <RawDatum, >({ label, linkStrokeWidth }: {
@@ -19,7 +18,7 @@ export const RadialLabel = <RawDatum, >({ label, linkStrokeWidth }: {
     return (
         <>
             <path
-                d={lineGenerator(label.line)}
+                d={lineGenerator(label.line) ?? undefined}
                 fill="none"
                 style={{ fill: 'none', stroke: label.linkColor }}
                 strokeWidth={linkStrokeWidth}

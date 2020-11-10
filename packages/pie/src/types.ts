@@ -57,7 +57,7 @@ export type MouseEventHandler<RawDatum, ElementType = HTMLCanvasElement> = (
     event: React.MouseEvent<ElementType>
 ) => void
 
-export type PieArcGenerator = (arc: PieArc) => string
+export type PieArcGenerator = (arc: PieArc) => string | null
 
 export type PieLayerId = 'slices' | 'radialLabels' | 'sliceLabels' | 'legends'
 
