@@ -16,7 +16,7 @@ declare module '@nivo/tooltip' {
         enableChip?: boolean
         color: string
         format?: (value: number | string) => number | string
-        renderContent?: () => React.ReactNode
+        renderContent?: (() => React.ReactNode) | null
     }
 
     export class BasicTooltip extends React.Component<BasicTooltipProps> {}

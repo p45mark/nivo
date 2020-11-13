@@ -37,6 +37,69 @@ declare module '@nivo/core' {
         colorBy?: string | GetColor<T>
     }
 
+    type ProvidedCss<Key> = NonNullable<React.CSSProperties[Key]>
+
+    type ProvidedCssProperties<Keys> = {
+        [Key in Keys]: ProvidedCss<Key>
+    }
+
+    type Text = ProvidedCssProperties<'fill' | 'fontSize' | 'fontFamily'>
+
+    export type MergedTheme = ProvidedCssProperties<'background' | 'fontFamily' | 'fontSize'> & {
+        textColor: ProvidedCss<'color'>
+        axis: {
+            domain: {
+                line: ProvidedCssProperties<'stroke' | 'strokeWidth'>
+            }
+            ticks: {
+                line: ProvidedCssProperties<'stroke' | 'strokeWidth'>
+                text: Text
+            }
+            legend: {
+                text: Text
+            }
+        }
+        grid: {
+            line: ProvidedCssProperties<'stroke' | 'strokeWidth'>
+        }
+        legends: {
+            text: Text
+        }
+        labels: {
+            text: Text
+        }
+        markers: {
+            lineColor: ProvidedCss<'color'>
+            lineStrokeWidth: ProvidedCss<'strokeWidth'>
+            text: Text
+        }
+        dots: {
+            text: Text
+        }
+        tooltip: {
+            container: ProvidedCssProperties<
+                'background' | 'color' | 'fontSize' | 'borderRadius' | 'boxShadow' | 'padding'
+            >
+            basic: ProvidedCssProperties<'whiteSpace' | 'display' | 'alignItems'>
+            chip: ProvidedCssProperties<'marginRight'>
+            table: Record<string, unknown>
+            tableCell: ProvidedCssProperties<'padding'>
+        }
+        crosshair: {
+            line: ProvidedCssProperties<
+                'stroke' | 'strokeWidth' | 'strokeOpacity' | 'strokeDasharray'
+            >
+        }
+        annotations: {
+            text: Text & ProvidedCssProperties<'outlineWidth' | 'outlineColor'>
+            link: ProvidedCssProperties<'stroke' | 'strokeWidth' | 'outlineWidth' | 'outlineColor'>
+            outline: ProvidedCssProperties<
+                'fill' | 'stroke' | 'strokeWidth' | 'outlineWidth' | 'outlineColor'
+            >
+            symbol: ProvidedCssProperties<'fill' | 'outlineWidth' | 'outlineColor'>
+        }
+    }
+
     export type Theme = Partial<{
         crosshair: Partial<{
             line: Partial<{
@@ -113,7 +176,7 @@ declare module '@nivo/core' {
             id: string
             [key: string]: any
         }[]
-        fill?: { id: string; match: object | SvgFillMatcher<T> | '*' }[]
+        fill?: { id: string; match: Record<string, unknown> | SvgFillMatcher<T> | '*' }[]
     }
 
     export interface CartesianMarkerProps {
@@ -230,6 +293,12 @@ declare module '@nivo/core' {
     export function degreesToRadians(degrees: number): number
     export function radiansToDegrees(radians: number): number
 
+    type Accessor<T, U> = T extends string ? U[T] : never
+
+    export function getAccessorFor(
+        directive: string | number
+    ): <Datum, Value>(datum: Datum) => Value
+
     export function useDimensions(
         width: number,
         height: number,
@@ -241,4 +310,8 @@ declare module '@nivo/core' {
         outerWidth: number
         outerHeight: number
     }
+
+    export function useTheme<T>(): Theme & MergedTheme & T
+
+    export function usePartialTheme(theme?: Theme): Required<Theme>
 }
